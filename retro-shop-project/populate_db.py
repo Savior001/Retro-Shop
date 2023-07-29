@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from db_models import Base, Item, DiscountCode, SalesItem, User, Order
 
 # Example connection URL for MySQL: 'mysql+mysqlconnector://username:password@host/database'
-engine = create_engine('mysql+mysqlconnector://root:Thelegendofzelda1!@127.0.0.1/retro_shop')
+engine = create_engine('mysql+mysqlconnector://root:pass@host/retro_shop')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)

@@ -87,7 +87,7 @@ class SalesItem(Base):
     def __repr__(self):
         return f"<SalesItem(id={self.id}, item_id={self.item_id}, sale_percentage={self.sale_percentage})>"
     
-engine = create_engine('mysql+mysqlconnector://root:Thelegendofzelda1!@127.0.0.1/retro_shop')
+engine = create_engine('mysql+mysqlconnector://root:pass@host/retro_shop')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)

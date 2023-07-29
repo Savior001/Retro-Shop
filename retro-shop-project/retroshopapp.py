@@ -120,7 +120,7 @@ def order_history():
 
 # Connection to Database
 # Replace 'sqlite:///your_database_name.db' with the actual database URL for your chosen database.
-engine = create_engine('mysql+mysqlconnector://root:Thelegendofzelda1!@127.0.0.1/retro_shop')
+engine = create_engine('mysql+mysqlconnector://root:pass@host/retro_shop')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
