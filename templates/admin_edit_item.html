@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Edit Item</title>
+</head>
+<body>
+    <h1>Admin - Edit Item</h1>
+    <form method="post" action="/admin/edit_item/{{ item.id }}">
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="{{ item.name }}" required>
+        <label for="price">Price:</label>
+        <input type="number" name="price" step="0.01" value="{{ item.price }}" required>
+        <label for="quantity_available">Quantity Available:</label>
+        <input type="number" name="quantity_available" value="{{ item.quantity_available }}" required>
+        <label for="image_url">Image URL:</label>
+        <input type="text" name="image_url" value="{{ item.image_url }}" required>
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>

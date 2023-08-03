@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Sales Items</title>
+</head>
+<body>
+    <h1>Admin - Sales Items</h1>
+    <form method="post" action="/admin/sales_items">
+        <label for="item_id">Item ID:</label>
+        <input type="number" name="item_id" required>
+        <label for="sale_percentage">Sale Percentage:</label>
+        <input type="number" name="sale_percentage" step="0.01" required>
+        <input type="submit" value="Create">
+    </form>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Item ID</th>
+            <th>Sale Percentage</th>
+        </tr>
+        {% for sales_item in sales_items %}
+            <tr>
+                <td>{{ sales_item.id }}</td>
+                <td>{{ sales_item.item_id }}</td>
+                <td>{{ sales_item.sale_percentage }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

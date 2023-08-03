@@ -1,0 +1,56 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Retro Video Games</title>
+</head>
+<body>
+    <h1>Welcome to our Retro Video Games Online Shop</h1>
+    <h2>Items for Sale</h2>
+    <ul>
+        {% for item in items %}
+        <li>
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" style="max-width: 100px;">
+            {{ item.name }} - ${{ item.price }} - Quantity: {{ item.quantity_available }}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Admin Dashboard</h2>
+    <ul>
+        <li><a href="/admin/items">Manage Items</a></li>
+        <li><a href="/admin/discount_codes">Manage Discount Codes</a></li>
+        <li><a href="/admin/sales_items">Manage Sales Items</a></li>
+        <li><a href="/admin/users">Manage Users</a></li>
+        <li><a href="/admin/orders">Show Placed Orders</a></li>
+        <li><a href="/admin/order_history/sort_by=date">Order History (Sort by Date)</a></li>
+        <li><a href="/admin/order_history/sort_by=customer">Order History (Sort by Customer)</a></li>
+        <li><a href="/admin/order_history/sort_by=order_size">Order History (Sort by Order Size)</a></li>
+    </ul>
+
+    {% if current_user %}
+        <h2>Inventory List</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity Available</th>
+                <th>Action</th>
+            </tr>
+            {% for item in inventory %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>${{ item.price }}</td>
+                <td>{{ item.quantity_available }}</td>
+                <td>
+                    <a href="/edit_item/{{ item.id }}">Edit</a>
+                    <a href="/delete_item/{{ item.id }}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p><a href="/login">Log in</a> to view the inventory list.</p>
+    {% endif %}
+</body>
+</html>
