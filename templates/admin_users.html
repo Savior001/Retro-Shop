@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Users</title>
+</head>
+<body>
+    <h1>Admin - Users</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Action</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <form method="post" action="/admin/users">
+                    <td>{{ user.id }}</td>
+                    <td><input type="text" name="username" value="{{ user.username }}"></td>
+                    <td><input type="password" name="password" value="{{ user.password }}"></td>
+                    <td>
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <input type="submit" value="Update">
+                    </td>
+                </form>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -2,8 +2,9 @@ import datetime
 from sqlalchemy import Column, DateTime, Integer, String, Float, ForeignKey, create_engine
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from database import db
 
-Base = declarative_base()
+Base = db.Model
 
 class Item(Base):
     __tablename__ = 'items'
@@ -12,14 +13,26 @@ class Item(Base):
     name = Column(String(255), nullable=False)
     price = Column(Float, nullable=False)
     quantity_available = Column(Integer, nullable=False)
-    image_url = Column(String(255))
+    image_url = Column(String(255), nullable=False)
 
-    # Add a one-to-many relationship with SalesItem.
-    # This indicates that an Item can have multiple SalesItems associated with it.
+    # one-to-many relationship with SalesItem
+    # an Item can have multiple SalesItems associated with it
     sales_items = relationship('SalesItem', back_populates='item')
 
     def __repr__(self):
         return f"<Item(id={self.id}, name='{self.name}', price={self.price}, quantity_available={self.quantity_available})>"
+
+class SalesItem(Base):
+    __tablename__ = 'sales_items'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    item_id = Column(Integer, ForeignKey('items.id'), nullable=False)
+    sale_percentage = Column(Float, nullable=False)
+
+    item = relationship('Item', back_populates='sales_items')
+
+    def __repr__(self):
+        return f"<SalesItem(id={self.id}, item_id={self.item_id}, sale_percentage={self.sale_percentage})>"
 
 class User(Base):
     __tablename__ = 'users'
@@ -28,7 +41,7 @@ class User(Base):
     username = Column(String(50), unique=True, nullable=False)
     password = Column(String(255), nullable=False)
 
-    # Define the one-to-many relationship between User and Order models.
+    # one-to-many relationship between User and Order models
     orders = relationship('Order', back_populates='user')
 
     def __repr__(self):
@@ -42,10 +55,10 @@ class Order(Base):
     total_amount = Column(Float, nullable=False)
     order_date = Column(DateTime, default=datetime.datetime.utcnow)
 
-    # Define the one-to-many relationship between Order and User models.
+    # one-to-many relationship between Order and User models
     user = relationship('User', back_populates='orders')
 
-    # Define the one-to-many relationship between Order and OrderItem models.
+    # one-to-many relationship between Order and OrderItem models
     items = relationship('OrderItem', back_populates='order')
 
     def __repr__(self):
@@ -74,20 +87,8 @@ class DiscountCode(Base):
 
     def __repr__(self):
         return f"<DiscountCode(id={self.id}, code='{self.code}', percentage={self.percentage})>"
-
-class SalesItem(Base):
-    __tablename__ = 'sales_items'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    item_id = Column(Integer, ForeignKey('items.id'), nullable=False)
-    sale_percentage = Column(Float, nullable=False)
-
-    item = relationship('Item', back_populates='sales_items')
-
-    def __repr__(self):
-        return f"<SalesItem(id={self.id}, item_id={self.item_id}, sale_percentage={self.sale_percentage})>"
     
-engine = create_engine('mysql+mysqlconnector://root:pass@host/retro_shop')
+engine = create_engine('mysql+mysqlconnector://root:password@host/retro_shop')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
@@ -95,26 +96,25 @@ session = Session()
 
 # Database Queries
 def get_all_items():
-    # Implementation for retrieving all items from the database.
-    pass
+    return session.query(Item).all()
 
-# Add the missing get_all_discount_codes function
 def get_all_discount_codes():
-    # Implementation for retrieving all discount codes from the database.
-    pass
+    return session.query(DiscountCode).all()
 
 def get_all_sales_items():
-    # Implementation for retrieving all sales items from the database.
-    pass
+    return session.query(SalesItem).all()
 
 def get_all_users():
-    # Implementation for retrieving all users from the database.
-    pass
+    return session.query(User).all()
 
 def get_all_orders():
-    # Implementation for retrieving all orders from the database.
-    pass
+    return session.query(Order).all()
 
 def get_order_history(sort_by='order_date'):
-    # Implementation for retrieving order history from the database with sorting options.
-    pass
+    # for retrieving order history from the database with sorting options
+    if sort_by == 'order_date':
+        return session.query(Order).order_by(Order.order_date).all()
+    elif sort_by == 'total_amount':
+        return session.query(Order).order_by(Order.total_amount).all()
+    else:
+        return session.query(Order).all()

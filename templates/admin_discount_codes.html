@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Discount Codes</title>
+</head>
+<body>
+    <h1>Admin - Discount Codes</h1>
+    <form method="post" action="/admin/discount_codes">
+        <label for="code">Code:</label>
+        <input type="text" name="code" required>
+        <label for="percentage">Percentage:</label>
+        <input type="number" name="percentage" step="0.01" required>
+        <input type="submit" value="Create">
+    </form>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Code</th>
+            <th>Percentage</th>
+        </tr>
+        {% for discount_code in discount_codes %}
+            <tr>
+                <td>{{ discount_code.id }}</td>
+                <td>{{ discount_code.code }}</td>
+                <td>{{ discount_code.percentage }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
