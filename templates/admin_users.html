@@ -5,16 +5,21 @@
 </head>
 <body>
     <h1>Admin - Users</h1>
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
     <table>
         <tr>
             <th>ID</th>
             <th>Username</th>
             <th>Password</th>
-            <th>Action</th>
+            <th></th>
         </tr>
         {% for user in users %}
             <tr>
-                <form method="post" action="/admin/users">
+                <form method="post" action="/admin/users/{{ user.id }}">
                     <td>{{ user.id }}</td>
                     <td><input type="text" name="username" value="{{ user.username }}"></td>
                     <td><input type="password" name="password" value="{{ user.password }}"></td>
@@ -26,5 +31,7 @@
             </tr>
         {% endfor %}
     </table>
+    <a href="/dashboard">Go to Dashboard</a>
+    <a href="/logout">Logout</a>
 </body>
 </html>

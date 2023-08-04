@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from db_models import Base, Item
+from db_models import Base, Item, User
 
-# Example connection URL for MySQL: 'mysql+mysqlconnector://username:password@host/database'
-engine = create_engine('mysql+mysqlconnector://root:password@host/retro_shop')
+# Example connection URL for MySQL: 'mysql+mysqlconnector://username:Thelegendofzelda1!@127.0.0.1/database'
+engine = create_engine('mysql+mysqlconnector://root:Thelegendofzelda1!@127.0.0.1/retro_shop')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
@@ -15,6 +15,12 @@ def create_items():
     item3 = Item(name='Mega Man 2', price=24.99, quantity_available=3, image_url='https://coverproject.sfo2.cdn.digitaloceanspaces.com/nes/nes_megaman2_thumb.jpg')
 
     session.add_all([item1, item2, item3])
+    session.commit()
+
+    user1 = User(id=1, username="ptg426", password="password")
+    user2 = User(id=2, username="admin", password="password")
+    
+    session.add_all([user1, user2])
     session.commit()
 
 def initialize_database():
