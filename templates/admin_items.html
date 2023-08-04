@@ -12,7 +12,7 @@
             <th>Price</th>
             <th>Quantity Available</th>
             <th>Image URL</th>
-            <th>Action</th>
+            <th></th>
         </tr>
         {% for item in items %}
             <tr>
@@ -24,11 +24,22 @@
                     <td><input type="text" name="image_url" value="{{ item.image_url }}"></td>
                     <td>
                         <input type="hidden" name="item_id" value="{{ item.id }}">
-                        <input type="submit" value="Update">
+                        <input type="submit" name="action" value="Update">
+                        <input type="submit" name="action" value="Delete">
                     </td>
                 </form>
             </tr>
         {% endfor %}
     </table>
+    <form method="post" action="/admin/items">
+        <th>___</th>
+        <input type="text" name="cname" required>
+        <input type="number" name="cprice" step="0.01" required>
+        <input type="number" name="cquantity" required>
+        <input type="text" name="curl" required>
+        <input type="submit" name="action" value="Create">
+    </form>
+    <a href="/dashboard">Go to Dashboard</a>
+    <a href="/logout">Logout</a>
 </body>
 </html>

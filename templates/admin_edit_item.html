@@ -5,6 +5,13 @@
 </head>
 <body>
     <h1>Admin - Edit Item</h1>
+    <ul>
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        {% endwith %}
+    </ul>
     <form method="post" action="/admin/edit_item/{{ item.id }}">
         <label for="name">Name:</label>
         <input type="text" name="name" value="{{ item.name }}" required>
@@ -16,5 +23,7 @@
         <input type="text" name="image_url" value="{{ item.image_url }}" required>
         <input type="submit" value="Update">
     </form>
+    <a href="/dashboard">Go to Dashboard</a>
+    <a href="/logout">Logout</a>
 </body>
 </html>

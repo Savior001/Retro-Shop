@@ -11,31 +11,35 @@
         {% for item in items %}
         <li>
             <img src="{{ item.image_url }}" alt="{{ item.name }}" style="max-width: 100px;">
-            {{ item.name }} - ${{ item.price }} - Quantity: {{ item.quantity_available }}
+            {{ item.name }} - {% if item.sales_items %}
+                <del>${{ item.price }}</del> <strong>${{ item.sales_items[0].sale_price }}</strong>
+            {% else %}
+                ${{ item.price }}
+            {% endif %}
         </li>
         {% endfor %}
     </ul>
 
-    <h2>Admin Dashboard</h2>
-    <ul>
-        <li><a href="/admin/items">Manage Items</a></li>
-        <li><a href="/admin/discount_codes">Manage Discount Codes</a></li>
-        <li><a href="/admin/sales_items">Manage Sales Items</a></li>
-        <li><a href="/admin/users">Manage Users</a></li>
-        <li><a href="/admin/orders">Show Placed Orders</a></li>
-        <li><a href="/admin/order_history/sort_by=date">Order History (Sort by Date)</a></li>
-        <li><a href="/admin/order_history/sort_by=customer">Order History (Sort by Customer)</a></li>
-        <li><a href="/admin/order_history/sort_by=order_size">Order History (Sort by Order Size)</a></li>
-    </ul>
-
     {% if current_user %}
+        <h2>Admin Dashboard</h2>
+        <ul>
+            <li><a href="/admin/items">Manage Items</a></li>
+            <li><a href="/admin/discount_codes">Manage Discount Codes</a></li>
+            <li><a href="/admin/sales_items">Manage Sales Items</a></li>
+            <li><a href="/admin/users">Manage Users</a></li>
+            <li><a href="/admin/orders">Show Placed Orders</a></li>
+            <li><a href="/admin/order_history/sort_by=date">Order History (Sort by Date)</a></li>
+            <li><a href="/admin/order_history/sort_by=customer">Order History (Sort by Customer)</a></li>
+            <li><a href="/admin/order_history/sort_by=order_size">Order History (Sort by Order Size)</a></li>
+        </ul>
+
         <h2>Inventory List</h2>
         <table>
             <tr>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Quantity Available</th>
-                <th>Action</th>
+                <th></th>
             </tr>
             {% for item in inventory %}
             <tr>
@@ -43,14 +47,17 @@
                 <td>${{ item.price }}</td>
                 <td>{{ item.quantity_available }}</td>
                 <td>
-                    <a href="/edit_item/{{ item.id }}">Edit</a>
-                    <a href="/delete_item/{{ item.id }}">Delete</a>
+                    <a href="/admin/edit_item/{{ item.id }}">Edit</a>
+                    <form method="post" action="/delete_item/{{ item.id }}" style="display: inline;">
+                        <input type="submit" value="Delete">
+                    </form>
                 </td>
             </tr>
             {% endfor %}
         </table>
+        <a href="/logout">Logout</a>
     {% else %}
-        <p><a href="/login">Log in</a> to view the inventory list.</p>
+        <p><a href="/login">Log in</a> to view admin dashboard.</p>
     {% endif %}
 </body>
 </html>

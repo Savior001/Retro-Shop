@@ -1,3 +1,4 @@
+<!-- admin_sales_items.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,21 +11,33 @@
         <input type="number" name="item_id" required>
         <label for="sale_percentage">Sale Percentage:</label>
         <input type="number" name="sale_percentage" step="0.01" required>
-        <input type="submit" value="Create">
+        <input type="submit" name="action" value="Create">
     </form>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
     <table>
         <tr>
-            <th>ID</th>
             <th>Item ID</th>
             <th>Sale Percentage</th>
+            <th>Sale Price</th>
+            <th></th>
         </tr>
         {% for sales_item in sales_items %}
             <tr>
-                <td>{{ sales_item.id }}</td>
                 <td>{{ sales_item.item_id }}</td>
                 <td>{{ sales_item.sale_percentage }}</td>
+                <td>{{ sales_item.sale_price}}</td>
+                <td>
+                    <form method="post" action="/admin/sales_items">
+                        <input type="hidden" name="sales_item_id" value="{{ sales_item.id }}">
+                        <input type="submit" name="action" value="Delete">
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </table>
+    <a href="/dashboard">Go to Dashboard</a>
+    <a href="/logout">Logout</a>
 </body>
 </html>

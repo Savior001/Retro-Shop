@@ -21,6 +21,10 @@ class Item(Base):
 
     def __repr__(self):
         return f"<Item(id={self.id}, name='{self.name}', price={self.price}, quantity_available={self.quantity_available})>"
+    
+    @staticmethod
+    def get_item(item_id):
+        return Item.query.get(item_id)
 
 class SalesItem(Base):
     __tablename__ = 'sales_items'
@@ -28,11 +32,16 @@ class SalesItem(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     item_id = Column(Integer, ForeignKey('items.id'), nullable=False)
     sale_percentage = Column(Float, nullable=False)
+    sale_price = Column(Float, nullable=False)
 
     item = relationship('Item', back_populates='sales_items')
 
     def __repr__(self):
         return f"<SalesItem(id={self.id}, item_id={self.item_id}, sale_percentage={self.sale_percentage})>"
+    
+    @staticmethod
+    def get_item_by_id(item_id):
+        return SalesItem.query.get(item_id)
 
 class User(Base):
     __tablename__ = 'users'
@@ -46,6 +55,10 @@ class User(Base):
 
     def __repr__(self):
         return f"<User(id={self.id}, username='{self.username}')>"
+    
+    @staticmethod
+    def get_user_by_id(user_id):
+        return User.query.get(user_id)
 
 class Order(Base):
     __tablename__ = 'orders'
@@ -88,7 +101,7 @@ class DiscountCode(Base):
     def __repr__(self):
         return f"<DiscountCode(id={self.id}, code='{self.code}', percentage={self.percentage})>"
     
-engine = create_engine('mysql+mysqlconnector://root:password@host/retro_shop')
+engine = create_engine('mysql+mysqlconnector://root:Thelegendofzelda1!@127.0.0.1/retro_shop')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
@@ -96,25 +109,28 @@ session = Session()
 
 # Database Queries
 def get_all_items():
-    return session.query(Item).all()
+    return db.session.query(Item).all()
+
+def get_item(id):
+    return db.session.query(Item).get(id)
 
 def get_all_discount_codes():
-    return session.query(DiscountCode).all()
+    return db.session.query(DiscountCode).all()
 
 def get_all_sales_items():
-    return session.query(SalesItem).all()
+    return db.session.query(SalesItem).all()
 
 def get_all_users():
-    return session.query(User).all()
+    return db.session.query(User).all()
 
 def get_all_orders():
-    return session.query(Order).all()
+    return db.session.query(Order).all()
 
 def get_order_history(sort_by='order_date'):
     # for retrieving order history from the database with sorting options
     if sort_by == 'order_date':
-        return session.query(Order).order_by(Order.order_date).all()
+        return db.session.query(Order).order_by(Order.order_date).all()
     elif sort_by == 'total_amount':
-        return session.query(Order).order_by(Order.total_amount).all()
+        return db.session.query(Order).order_by(Order.total_amount).all()
     else:
-        return session.query(Order).all()
+        return db.session.query(Order).all()

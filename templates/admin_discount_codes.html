@@ -5,26 +5,35 @@
 </head>
 <body>
     <h1>Admin - Discount Codes</h1>
+    <ul>
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        {% endwith %}
+    </ul>
     <form method="post" action="/admin/discount_codes">
-        <label for="code">Code:</label>
+        <label for="code">Discount Code:</label>
         <input type="text" name="code" required>
         <label for="percentage">Percentage:</label>
         <input type="number" name="percentage" step="0.01" required>
-        <input type="submit" value="Create">
+        <input type="hidden" name="action" value="create">
+        <input type="submit" value="Create Discount Code">
     </form>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Code</th>
-            <th>Percentage</th>
-        </tr>
-        {% for discount_code in discount_codes %}
-            <tr>
-                <td>{{ discount_code.id }}</td>
-                <td>{{ discount_code.code }}</td>
-                <td>{{ discount_code.percentage }}</td>
-            </tr>
+    <h2>Existing Discount Codes:</h2>
+    <ul>
+        {% for code in discount_codes %}
+            <li>
+                {{ code.code }} - {{ code.percentage * 100 }}%
+                <form method="post" action="/admin/discount_codes">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="code_id" value="{{ code.id }}">
+                    <input type="submit" value="Delete">
+                </form>
+            </li>
         {% endfor %}
-    </table>
+    </ul>
+    <a href="/dashboard">Go to Dashboard</a>
+    <a href="/logout">Logout</a>
 </body>
 </html>
